@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         ant 'Ant'
+        jdk 'java21'
     }
     stages {
         stage('Clean') 
