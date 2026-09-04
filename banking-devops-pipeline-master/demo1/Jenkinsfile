@@ -1,50 +1,56 @@
 pipeline {
     agent any
+
     tools {
         ant 'Ant'
         jdk 'java21'
     }
+
     stages {
-        stage('Clean') 
-        {
-            steps 
-            {
-                sh "ant -f demo1/build.xml clean"
+
+        stage('Check Files') {
+            steps {
+                sh '''
+                    pwd
+                    ls -la
+                    find . -maxdepth 3 -type f | sort
+                '''
             }
         }
-        stage('Build') 
-        {
-            steps 
-            {
-                sh "ant -f demo1/build.xml build"
+
+        stage('Clean') {
+            steps {
+                sh 'ant -f demo1/build.xml clean'
             }
         }
-        stage('Test') 
-        {
-            steps 
-            {
-                sh "ant -f demo1/build.xml Debt_CalculationTest"
+
+        stage('Build') {
+            steps {
+                sh 'ant -f demo1/build.xml build'
             }
         }
-        stage('Junit reports') 
-        {
-            steps 
-            {
-                sh "ant -f demo1/build.xml junitreport"
+
+        stage('Test') {
+            steps {
+                sh 'ant -f demo1/build.xml Debt_CalculationTest'
             }
         }
-        stage('Mutation_Testing') 
-        {
-            steps 
-            {
-                sh "ant -f demo1/build.xml pit"
+
+        stage('Junit reports') {
+            steps {
+                sh 'ant -f demo1/build.xml junitreport'
             }
         }
-        stage('Find_Bugs') 
-        {
-            steps 
-            {
-                sh "ant -f demo1/build.xml spotbugs"
+
+        stage('Mutation Testing') {
+            steps {
+                sh 'ant -f demo1/build.xml pit'
+            }
+        }
+
+        stage('Find Bugs') {
+            steps {
+                sh 'ant -f demo1/build.xml spotbugs'
             }
         }
     }
